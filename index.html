@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>For Simelwe ❤️</title>
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: #030006;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: Arial, sans-serif;
+    color: white;
+}
+
+/* Background glow */
+.background {
+    position: fixed;
+    inset: 0;
+    background:
+        radial-gradient(
+            circle at center,
+            rgba(120, 0, 65, 0.18),
+            transparent 60%
+        );
+}
+
+/* Main scene */
+.scene {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    perspective: 1000px;
+    position: relative;
+}
+
+/* Heart container */
+.heart-container {
+    width: 320px;
+    height: 320px;
+    position: relative;
+    transform-style: preserve-3d;
+    animation: float 4s ease-in-out infinite;
+}
+
+/* Heart made of text */
+.heart {
+    position: absolute;
+    inset: 0;
+    transform-style: preserve-3d;
+    animation: rotate 12s linear infinite;
+}
+
+/* Each text layer */
+.layer {
+    position: absolute;
+    inset: 0;
+    transform-style: preserve-3d;
+}
+
+/* Love words */
+.love-word {
+    position: absolute;
+    color: #ffadd6;
+    font-size: 10px;
+    font-weight: bold;
+    white-space: nowrap;
+    text-shadow:
+        0 0 5px #ff1493,
+        0 0 10px #ff69b4,
+        0 0 20px #ff1493;
+    animation: glowing 2s ease-in-out infinite alternate;
+}
+
+/* Center message */
+.center-message {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 230px;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    z-index: 10;
+    animation: heartbeat 2s ease-in-out infinite;
+}
+
+.center-message h1 {
+    color: #ffb6d9;
+    font-family: cursive;
+    font-size: 27px;
+    text-shadow:
+        0 0 10px #ff1493,
+        0 0 25px #ff69b4;
+}
+
+.center-message p {
+    color: #ffe3f1;
+    font-size: 12px;
+    letter-spacing: 2px;
+    margin-top: 12px;
+    text-shadow: 0 0 10px #ff69b4;
+}
+
+/* Floating hearts */
+.floating-heart {
+    position: absolute;
+    bottom: -40px;
+    color: #ff69b4;
+    text-shadow: 0 0 15px #ff1493;
+    animation: rise linear infinite;
+    pointer-events: none;
+}
+
+/* Animations */
+@keyframes rotate {
+    from {
+        transform: rotateY(0deg) rotateX(12deg);
+    }
+    to {
+        transform: rotateY(360deg) rotateX(12deg);
+    }
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-12px);
+    }
+}
+
+@keyframes glowing {
+    from {
+        opacity: 0.55;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes heartbeat {
+    0%, 100% {
+        scale: 1;
+    }
+    50% {
+        scale: 1.07;
+    }
+}
+
+@keyframes rise {
+    0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 0;
+    }
+    15% {
+        opacity: 0.8;
+    }
+    85% {
+        opacity: 0.8;
+    }
+    100% {
+        transform: translateY(-110vh) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+/* Mobile adjustments */
+@media (max-width: 500px) {
+    .heart-container {
+        transform: scale(0.85);
+    }
+
+    .center-message h1 {
+        font-size: 25px;
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="background"></div>
+
+<div class="scene">
+
+    <div class="heart-container">
+
+        <div class="heart" id="heart"></div>
+
+        <div class="center-message">
+            <h1>Simelwe ❤️</h1>
+            <p>YOU ARE SPECIAL TO ME</p>
+            <p>FOREVER & ALWAYS 💕</p>
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+/* Personal message */
+const name = "SIMELWE";
+const loveMessage = `I LOVE YOU ${name}`;
+
+/* Create the 3D heart */
+const heart = document.getElementById("heart");
+
+const points = 150;
+const layers = 7;
+
+for (let layerIndex = 0; layerIndex < layers; layerIndex++) {
+
+    const layer = document.createElement("div");
+    layer.className = "layer";
+
+    const depth = (layerIndex - (layers - 1) / 2) * 9;
+
+    for (let i = 0; i < points; i++) {
+
+        const t = (i / points) * Math.PI * 2;
+
+        /* Mathematical heart shape */
+        const x = 16 * Math.pow(Math.sin(t), 3);
+
+        const y =
+            13 * Math.cos(t)
+            - 5 * Math.cos(2 * t)
+            - 2 * Math.cos(3 * t)
+            - Math.cos(4 * t);
+
+        const word = document.createElement("span");
+        word.className = "love-word";
+        word.textContent = loveMessage;
+
+        const scale = 7;
+
+        const posX = x * scale;
+        const posY = -y * scale;
+
+        const angle = Math.atan2(-y, x) * 180 / Math.PI;
+
+        word.style.left = `calc(50% + ${posX}px)`;
+        word.style.top = `calc(50% + ${posY}px)`;
+
+        word.style.transform =
+            `translate(-50%, -50%) rotate(${angle}deg)`;
+
+        word.style.opacity = 0.5 + Math.random() * 0.5;
+
+        word.style.animationDelay =
+            `${Math.random() * 2}s`;
+
+        layer.appendChild(word);
+
+    }
+
+    layer.style.transform = `translateZ(${depth}px)`;
+
+    heart.appendChild(layer);
+
+}
+
+/* Create floating hearts */
+for (let i = 0; i < 24; i++) {
+
+    const floatingHeart = document.createElement("div");
+
+    floatingHeart.className = "floating-heart";
+    floatingHeart.textContent = Math.random() > 0.5 ? "♥" : "♡";
+
+    floatingHeart.style.left = Math.random() * 100 + "%";
+
+    floatingHeart.style.fontSize =
+        (12 + Math.random() * 22) + "px";
+
+    floatingHeart.style.animationDuration =
+        (6 + Math.random() * 10) + "s";
+
+    floatingHeart.style.animationDelay =
+        (Math.random() * 10) + "s";
+
+    document.body.appendChild(floatingHeart);
+
+}
+
+</script>
+
+</body>
+</html>
